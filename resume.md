@@ -55,3 +55,19 @@ Tâches :
 ✅ Mise en forme du devis PDF : logo, contenu, tampon (useCORS activé pour les assets Supabase Storage)
 ✅ Scaffolding app (Vite + React + React Router + Tailwind + routing protégé)
 ⬜ Tests globaux (à faire une fois que le frontend dev a branché son UI)
+
+ Tester localement                                                                                                                     
+                                                                                                                                          npm run dev                                                                                                                           
+  Puis ouvre http://localhost:5173 — l'app démarre, tu verras les pages stub (LoginPage, etc.).                                                                                                                                                                                   ▎ Tes clés Supabase sont déjà dans .env.local avec le bon préfixe VITE_.
+                                                                                                                                          ---                                                                                                                                   
+  Pusher sur ta branche                                                                                                                 
+
+  Tu dois d'abord ajouter le remote (l'URL de ton repo git, demande-la à ton chef d'équipe si tu ne l'as pas) :                         
+                                                                                                                                          # 1. Ajouter le remote (une seule fois)
+  git remote add origin https://github.com/<organisation>/<repo>.git                                                                                                                                                                                                            
+  # 2. Pusher ta branche Jaspe                                                                                                            git push -u origin Jaspe
+                                                                                                                                          Si le repo existe déjà avec une branche Jaspe créée par ton chef :                                                                       
+  git push --set-upstream origin Jaspe                                                                                                  
+                                                                                                                                          ---
+  Anomalie corrigée au passage : ton dossier .gitignore était un répertoire (bug Windows) — il est maintenant un vrai fichier, et tes   
+  clés Supabase ont été migrées de REACT_APP_ vers VITE_ (format requis par Vite).                                                         
