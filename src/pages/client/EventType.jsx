@@ -35,14 +35,20 @@ export default function EventType() {
         <p style={{ fontSize:13,color:'rgba(255,255,255,.4)',marginBottom:28,lineHeight:1.6 }}>Choisissez la catégorie qui correspond à votre projet.</p>
 
         {loading ? (
-          <p style={{ color:'rgba(255,255,255,.3)',fontSize:13 }}>Chargement...</p>
+          <p style={{ color:'rgba(255,255,255,.3)',fontSize:30 }}>Chargement...</p>
         ) : (
-          <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:20 }}>
+          <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:10 }}>
             {types.map(t => (
               <div key={t.id}
                 onClick={() => setSelected(t)}
-                style={{ background:selected?.id===t.id?'rgba(255,77,46,.08)':'#111827', border:`1px solid ${selected?.id===t.id?'#FF4D2E':'rgba(255,255,255,.07)'}`, borderRadius:16, padding:'18px 12px', textAlign:'center', cursor:'pointer', transition:'all .2s' }}>
-                <div style={{ fontSize:28,marginBottom:8 }}>{t.icon}</div>
+                style={{ background:selected?.id===t.id?'rgba(255,77,46,.08)':'#111827', border:`1px solid ${selected?.id===t.id?'#FF4D2E':'rgba(255,255,255,.07)'}`, borderRadius:16, padding:'10px 12px', textAlign:'center', cursor:'pointer', transition:'all .2s' }}>
+                <div style={{ height: '120px',display: 'flex',justifyContent: 'center',alignItems: 'center',marginBottom: 12}}>
+                  <img
+                    src={t.icon}
+                    alt={t.label}
+                    style={{ maxWidth: '80px',maxHeight: '80px',objectFit: 'contain'  }}
+                  />
+                </div>
                 <div style={{ fontSize:13,fontWeight:500,color:selected?.id===t.id?'#FF7A5C':'#fff' }}>{t.label}</div>
               </div>
             ))}

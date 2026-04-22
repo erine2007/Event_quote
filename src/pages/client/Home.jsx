@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { supabase } from '../../lib/supabase'
+import logo from "../../assets/logo.png";
 
 export default function Home() {
   const navigate = useNavigate()
@@ -15,6 +17,19 @@ export default function Home() {
     transform: step >= n ? 'translateY(0)' : 'translateY(22px)',
     transition: 'opacity 0.55s ease, transform 0.55s ease',
   })
+
+  const [eventTypes, setEventTypes] = useState([])
+
+  useEffect(() => {
+    const fetchEventTypes = async () => {
+      const { data, error } = await supabase
+        .from('event_types')
+        .select('id, label, icon')
+        .order('display_order', { ascending: true })
+      if (!error) setEventTypes(data)
+    }
+    fetchEventTypes()
+  }, [])
 
   return (
     <div style={{ minHeight: '100vh', background: '#0B0D17', fontFamily: "'Outfit', sans-serif", color: '#fff', overflowX: 'hidden' }}>
@@ -37,10 +52,13 @@ export default function Home() {
 
         {/* NAV */}
         <nav style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'18px 22px 0',...show(0) }}>
-          <div style={{ display:'flex',alignItems:'center',gap:9 }}>
-            <div style={{ width:36,height:36,borderRadius:10,background:'#FF4D2E',display:'flex',alignItems:'center',justifyContent:'center',fontWeight:800,fontSize:17,color:'#fff',boxShadow:'0 4px 14px rgba(255,77,46,.5)' }}>E</div>
-            <span style={{ fontFamily:"'Syne',sans-serif",fontSize:20,fontWeight:800,letterSpacing:'-0.02em' }}>MirlaEvent</span>
-          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+           <img 
+             src={logo} 
+             alt="MirlaEvent"
+             style={{ height: 100, objectFit: 'contain' }}
+           />
+         </div>
           <button onClick={() => navigate('/login')} style={{ background:'rgba(255,255,255,.05)',border:'1px solid rgba(255,255,255,.1)',borderRadius:24,padding:'9px 18px',color:'rgba(255,255,255,.7)',fontSize:13,fontWeight:500,cursor:'pointer',fontFamily:"'Outfit',sans-serif" }}>
             Connexion
           </button>
@@ -62,9 +80,7 @@ export default function Home() {
               <span style={{ WebkitTextStroke:'2px #FF4D2E',color:'transparent' }}>moments</span><br />
               inoubliables.
             </h1>
-            <p style={{ color:'rgba(255,255,255,.45)',fontSize:15,lineHeight:1.7,marginBottom:32,fontWeight:300,maxWidth:320 }}>
-              Anniversaire, mariage, séminaire — devis PDF professionnel en moins de 2 minutes.
-            </p>
+            
           </div>
 
           <div style={{ ...show(3),display:'flex',flexDirection:'column',gap:12,marginBottom:36 }}>
@@ -117,9 +133,10 @@ export default function Home() {
         <div style={{ ...show(4),padding:'0 22px 32px' }}>
           <p style={{ fontSize:10,color:'rgba(255,255,255,.3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.12em',marginBottom:14 }}>Nos spécialités</p>
           <div style={{ display:'flex',flexWrap:'wrap',gap:8 }}>
-            {[{ icon:'🎂',label:'Anniversaire' },{ icon:'💍',label:'Mariage' },{ icon:'🏢',label:'Séminaire' },{ icon:'🎉',label:'Soirée' },{ icon:'🤝',label:'Conférence' },{ icon:'🍽️',label:'Dîner pro' },{ icon:'🎓',label:'Remise de prix' },{ icon:'✨',label:'Autre' }].map(e => (
-              <div key={e.label} className="ep" onClick={() => navigate('/register')} style={{ display:'flex',alignItems:'center',gap:6,background:'rgba(255,255,255,.05)',border:'1px solid rgba(255,255,255,.08)',borderRadius:30,padding:'9px 14px',cursor:'pointer',color:'rgba(255,255,255,.65)',fontSize:12,fontWeight:500 }}>
-                <span style={{ fontSize:14 }}>{e.icon}</span>{e.label}
+            {eventTypes.map(e => (
+              <div key={e.id} className="ep" onClick={() => navigate('/register')} style={{ display:'flex',alignItems:'center',gap:6,background:'rgba(255,255,255,.05)',border:'1px solid rgba(255,255,255,.08)',borderRadius:30,padding:'9px 14px',cursor:'pointer',color:'rgba(255,255,255,.65)',fontSize:12,fontWeight:500 }}>
+                <img src={e.icon} alt={e.label} style={{ width:120,height:120,objectFit:'contain', borderRadius:'4' }} />
+                {e.label}
               </div>
             ))}
           </div>

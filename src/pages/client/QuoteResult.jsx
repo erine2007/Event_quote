@@ -16,11 +16,12 @@ export default function QuoteResult() {
   const [quote, setQuote] = useState(null)
   const [downloading, setDownloading] = useState(false)
 
-  const quoteId   = sessionStorage.getItem('generatedQuoteId')
-  const eventType = sessionStorage.getItem('quoteEventLabel') || ''
-  const guests    = parseInt(sessionStorage.getItem('quoteGuests') || 40)
-  const date      = sessionStorage.getItem('quoteDate') || ''
-  const location  = sessionStorage.getItem('quoteLocation') || ''
+  const quoteId    = sessionStorage.getItem('generatedQuoteId')
+  const eventLabel = sessionStorage.getItem('quoteEventLabel') || ''
+  const eventIcon  = sessionStorage.getItem('quoteEventIcon')  || ''
+  const guests     = parseInt(sessionStorage.getItem('quoteGuests') || 40)
+  const date       = sessionStorage.getItem('quoteDate') || ''
+  const location   = sessionStorage.getItem('quoteLocation') || ''
 
   useEffect(() => {
     supabase.from('company').select('*').single()
@@ -106,7 +107,7 @@ export default function QuoteResult() {
         {/* ── PDF ── */}
         <div ref={pdfRef} style={{ background:'#ffffff', borderRadius:0, overflow:'hidden', marginBottom:20, width:'100%' }}>
 
-          {/* HEADER — angles droits, pas de borderRadius */}
+          {/* HEADER */}
           <div style={{ background:'#0D1B2A', padding:'26px 28px', display:'flex', justifyContent:'space-between', alignItems:'flex-start', borderRadius:0 }}>
             <div>
               {company?.logo_url ? (
@@ -117,7 +118,6 @@ export default function QuoteResult() {
                   {company?.name || 'MirlaEvent'}
                 </div>
               )}
-              {/* ✅ Texte entreprise agrandi : 13px → lisible */}
               <div style={{ color:'#94A3B8', fontSize:13, lineHeight:2.1 }}>
                 {company?.address  && <span>{company.address}<br/></span>}
                 {company?.phone    && <span>{company.phone}</span>}
@@ -130,7 +130,6 @@ export default function QuoteResult() {
               <div style={{ color:'#00D4AA', fontSize:30, fontWeight:700, fontFamily:'Georgia,serif', letterSpacing:'0.08em' }}>
                 DEVIS
               </div>
-              {/* ✅ Numéro et date agrandis */}
               <div style={{ color:'#64748B', fontSize:13, marginTop:6 }}>N° {quote?.quote_number || '—'}</div>
               <div style={{ color:'#64748B', fontSize:13, marginTop:3 }}>Émis le {today}</div>
             </div>
@@ -140,7 +139,6 @@ export default function QuoteResult() {
           <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', borderBottom:'1px solid #E2E8F0' }}>
             <div style={{ padding:'18px 24px', borderRight:'1px solid #E2E8F0' }}>
               <div style={{ fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'.1em', color:'#94A3B8', marginBottom:10 }}>Client</div>
-              {/* ✅ Nom client agrandi */}
               <div style={{ fontSize:16, fontWeight:600, color:'#1E293B', marginBottom:5 }}>
                 {client?.first_name || user?.user_metadata?.first_name || '—'}{' '}
                 {client?.last_name  || user?.user_metadata?.last_name  || ''}
@@ -154,8 +152,20 @@ export default function QuoteResult() {
             </div>
             <div style={{ padding:'18px 24px' }}>
               <div style={{ fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'.1em', color:'#94A3B8', marginBottom:10 }}>Événement</div>
-              {/* ✅ Infos événement agrandies */}
-              <div style={{ fontSize:16, fontWeight:600, color:'#1E293B', marginBottom:5 }}>{eventType}</div>
+
+              {/* ✅ FIX : affichage séparé de l'icône (img) et du label (texte) */}
+              <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:5 }}>
+                {eventIcon && (
+                  <img
+                    src={eventIcon}
+                    alt={eventLabel}
+                    crossOrigin="anonymous"
+                    style={{ width:24, height:24, objectFit:'contain', borderRadius:4, flexShrink:0 }}
+                  />
+                )}
+                <span style={{ fontSize:16, fontWeight:600, color:'#1E293B' }}>{eventLabel}</span>
+              </div>
+
               {date && (
                 <div style={{ fontSize:13, color:'#64748B', marginBottom:3 }}>
                   {new Date(date).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})}
@@ -170,7 +180,6 @@ export default function QuoteResult() {
 
           {/* TABLEAU PRESTATIONS */}
           <div style={{ padding:'0 24px' }}>
-            {/* ✅ En-têtes tableau agrandis */}
             <div style={{ display:'grid', gridTemplateColumns:'2fr .6fr 1fr .7fr 1fr', padding:'10px 8px', fontSize:11, fontWeight:700, textTransform:'uppercase', color:'#94A3B8', borderBottom:'1px solid #E2E8F0', marginTop:18 }}>
               <span>Prestation</span>
               <span style={{ textAlign:'center' }}>TVA</span>
@@ -178,7 +187,6 @@ export default function QuoteResult() {
               <span style={{ textAlign:'center' }}>Qté</span>
               <span style={{ textAlign:'right' }}>Total HT</span>
             </div>
-            {/* ✅ Lignes tableau agrandies */}
             {items.map((item, i) => (
               <div key={i} style={{ display:'grid', gridTemplateColumns:'2fr .6fr 1fr .7fr 1fr', padding:'12px 8px', fontSize:13, borderBottom:'1px solid #F1F5F9', background:i%2===0?'#F8FAFC':'#ffffff', alignItems:'center' }}>
                 <span style={{ fontWeight:500, color:'#1E293B' }}>{item.service_name}</span>
@@ -195,7 +203,6 @@ export default function QuoteResult() {
           {/* TOTAUX */}
           <div style={{ display:'flex', justifyContent:'flex-end', padding:'18px 24px' }}>
             <div style={{ width:230 }}>
-              {/* ✅ Totaux agrandis */}
               <div style={{ display:'flex', justifyContent:'space-between', fontSize:13, color:'#64748B', padding:'5px 0' }}>
                 <span>Total HT</span><span>{formatPrice(totalHT)}</span>
               </div>
@@ -209,15 +216,13 @@ export default function QuoteResult() {
             </div>
           </div>
 
-          {/* FOOTER + TAMPON — pas d'espace vide en bas */}
+          {/* FOOTER + TAMPON */}
           <div style={{ padding:'16px 24px 20px', background:'#F8FAFC', borderTop:'1px solid #E2E8F0', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-            {/* ✅ Texte footer agrandi */}
             <div style={{ fontSize:11, color:'#94A3B8', lineHeight:2.0, maxWidth:280 }}>
               Devis valable {company?.quote_validity_days || 30} jours<br/>
               {company?.payment_conditions}<br/>
               SIRET {company?.siret}
             </div>
-            {/* ✅ Tampon incliné — taille ajustée */}
             {company?.stamp_url ? (
               <div style={{ transform:'rotate(-12deg)', transformOrigin:'center', flexShrink:0 }}>
                 <img src={company.stamp_url} alt="tampon officiel" crossOrigin="anonymous"
@@ -231,7 +236,6 @@ export default function QuoteResult() {
           </div>
 
         </div>
-        {/* ── FIN PDF — pas de marge supplémentaire ── */}
 
         {/* Boutons */}
         <div style={{ display:'flex', flexDirection:'column', gap:10 }}>

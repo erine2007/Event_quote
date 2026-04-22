@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../hooks/useAuth'
 import { formatPrice } from '../../utils/calculateQuote'
+import logo from "../../assets/logo.png";
 
 const STATUS = {
   en_attente: { label:'En attente', color:'#F59E0B', bg:'rgba(245,158,11,.15)', border:'rgba(245,158,11,.3)', icon:'⏳' },
@@ -37,9 +38,12 @@ export default function Dashboard() {
     <div style={{ minHeight:'100vh', background:'#0B0D17', fontFamily:"'Outfit',sans-serif", color:'#fff' }}>
       {/* Nav */}
       <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'18px 22px 0' }}>
-        <div style={{ display:'flex',alignItems:'center',gap:8 }}>
-          <div style={{ width:32,height:32,borderRadius:9,background:'#FF4D2E',display:'flex',alignItems:'center',justifyContent:'center',fontWeight:800,fontSize:14,color:'#fff' }}>E</div>
-          <span style={{ fontFamily:"'Syne',sans-serif",fontSize:18,fontWeight:800 }}>MirlaEvent</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <img 
+            src={logo} 
+            alt="MirlaEvent"
+            style={{ height: 100, objectFit: 'contain' }}
+          />
         </div>
         <button onClick={handleLogout} style={{ background:'none',border:'none',cursor:'pointer',color:'rgba(255,255,255,.4)',fontSize:12,fontFamily:"'Outfit',sans-serif" }}>Déconnexion</button>
       </div>

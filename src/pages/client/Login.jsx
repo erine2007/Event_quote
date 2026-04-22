@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabase'
+import logo from "../../assets/logo.png";
+
 
 export default function Login() {
   const navigate = useNavigate()
@@ -44,9 +46,12 @@ export default function Login() {
     <div style={{ minHeight:'100vh', background:'#0B0D17', fontFamily:"'Outfit',sans-serif", color:'#fff' }}>
       <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'18px 22px 0' }}>
         <button onClick={() => navigate('/')} style={{ background:'none',border:'none',cursor:'pointer',color:'rgba(255,255,255,.4)',fontSize:13,fontFamily:"'Outfit',sans-serif" }}>← Retour</button>
-        <div style={{ display:'flex',alignItems:'center',gap:8 }}>
-          <div style={{ width:32,height:32,borderRadius:9,background:'#FF4D2E',display:'flex',alignItems:'center',justifyContent:'center',fontWeight:800,fontSize:14,color:'#fff' }}>E</div>
-          <span style={{ fontFamily:"'Syne',sans-serif",fontSize:18,fontWeight:800 }}>MirlaEvent</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <img 
+            src={logo} 
+            alt="MirlaEvent"
+            style={{ height: 100, objectFit: 'contain' }}
+          />
         </div>
       </div>
 

@@ -111,8 +111,13 @@ export default function ContactForm() {
           <div style={{ position:'absolute',top:0,left:0,right:0,height:2,background:'linear-gradient(90deg,#FF4D2E,#FFB800,transparent)' }} />
 
           <div style={{ marginBottom:12 }}>
-            <div style={{ fontFamily:"'Syne',sans-serif",fontSize:16,fontWeight:700,marginBottom:3 }}>
-              {eventIcon} {eventType}
+            <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+              <img 
+               src={eventIcon} 
+               alt={eventType} 
+               style={{ width:24, height:24, objectFit:'cover', borderRadius:4 }}
+             />
+             <span>{eventType}</span>
             </div>
             <div style={{ fontSize:11,color:'rgba(255,255,255,.35)' }}>
               {guests} personnes
